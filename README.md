@@ -4,15 +4,14 @@ A Chrome (Manifest V3) extension that filters amazon.co.uk to show only items
 sold by Amazon EU, avoiding the customs charge (€3 + VAT) that applies to
 non-EU-sold items on orders under €150, in effect since 1 July.
 
-It works by appending Amazon's own seller facet (`p_6:A30DC7701CXIBH`,
-the "Amazon EU S.à r.l." seller ID) to search/category URLs, and by
+It works by appending Amazon's EU own seller ID (`p_6:A30DC7701CXIBH`) to search/category URLs, and by
 badging product pages that don't go through search (e.g. shared links)
 with the seller's EU/non-EU status.
 
 ## What it does
 
 - **Search & category pages** (`/s`, `/b`): redirects the URL to include the
-  Amazon EU seller facet, so only EU-sold items appear. Shows a blue,
+  Amazon EU seller ID, so only EU-sold items appear. Shows a blue,
   EU-flag-styled banner at the top of results confirming filter status
   (or a grey one when disabled).
 - **Product pages** (`/dp/*`, `/gp/product/*`): reads the "Sold by" field in
@@ -35,7 +34,7 @@ handling:
    `fetch` + `history.pushState` and never fire a fresh `main_frame`
    request) — `declarativeNetRequest` never sees these, so `search-filter.js`
    polls `location.href` (on `popstate` and a 400ms interval) and forces a
-   real navigation via `window.location.replace()` when the seller facet is
+   real navigation via `window.location.replace()` when the seller  is
    missing.
 
 A `sessionStorage` guard (`euFilterCorrectionAttempts`, max 2 per distinct
@@ -44,7 +43,7 @@ search, so a query Amazon genuinely won't filter (e.g. zero EU-sold results)
 doesn't reload forever.
 
 Product pages are handled entirely separately (`content.js`) because they
-aren't reachable via the facet redirect — a shared/bookmarked product link
+aren't reachable via the  redirect — a shared/bookmarked product link
 goes straight to `/dp/...` with no search step to intercept.
 
 ## File overview
@@ -52,7 +51,7 @@ goes straight to `/dp/...` with no search step to intercept.
 | File | Runs on | Purpose |
 |---|---|---|
 | `manifest.json` | — | MV3 manifest: permissions, content script matches |
-| `background.js` | service worker | `declarativeNetRequest` rules that redirect `/s` and `/b` URLs to include the EU seller facet; sets the toolbar badge; reloads Amazon tabs when the toggle changes |
+| `background.js` | service worker | `declarativeNetRequest` rules that redirect `/s` and `/b` URLs to include the EU seller ; sets the toolbar badge; reloads Amazon tabs when the toggle changes |
 | `search-filter.js` | `/s*`, `/b*` (`document_start`) | Catches SPA-style navigation the network rules miss; renders the "EU-Only Filter: ON/OFF" status banner |
 | `content.js` | `/dp/*`, `/gp/product/*` (`document_idle`) | Scrapes the buybox "Sold by" seller name, classifies EU vs non-EU, renders the badge |
 | `content.css` | shared | Styles for both the product badge and the search/category status banner (incl. the EU star-ring SVG) |
@@ -109,7 +108,7 @@ cd icons && python3 gen_icons.py
   spamming the console; the fix for the user is to reload the actual page
   tab, not just the extension.
 - EU-vs-non-EU classification for the product badge is a regex match
-  (`/amazon\s*eu/i`) against the seller name text, not the seller ID facet
+  (`/amazon\s*eu/i`) against the seller name text, not the seller ID
   used for search filtering — a seller literally named e.g. "Amazon EU
   Wholesale" would be misclassified. Low risk in practice but worth knowing.
 
