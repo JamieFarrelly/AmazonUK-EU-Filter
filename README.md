@@ -61,9 +61,13 @@ goes straight to `/dp/...` with no search step to intercept.
 
 ## Screenshots
 
-| Search results | Product page |
-|---|---|
-| ![Search results with EU-Only Filter banner](store-listing/screenshots/search.png) | ![Product page with EU seller badge](store-listing/screenshots/product.png) |
+Search results with the EU-Only Filter banner:
+
+![Search results with EU-Only Filter banner](store-listing/screenshots/search.png)
+
+Product page with the EU seller badge:
+
+![Product page with EU seller badge](store-listing/screenshots/product.png)
 
 ## Development
 
