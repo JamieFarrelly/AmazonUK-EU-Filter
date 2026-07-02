@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Amazon UK EU-Only Filter</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="header">
+      <img src="icons/icon48.png" alt="" width="28" height="28" />
+      <h1>EU-Only Filter</h1>
+    </div>
+    <p class="subtitle">
+      Only show amazon.co.uk items sold by Amazon EU, so you skip the new
+      &euro;3 + VAT non-EU customs charge.
+    </p>
+    <label class="switch-row">
+      <span id="statusLabel">On</span>
+      <span class="switch">
+        <input type="checkbox" id="toggle" />
+        <span class="slider"></span>
+      </span>
+    </label>
+    <p class="note">
+      Filters amazon.co.uk search and category pages, and badges product
+      pages with their customs-fee status.
+    </p>
+    <script src="popup.js"></script>
+  </body>
+</html>
