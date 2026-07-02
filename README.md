@@ -2,10 +2,9 @@
 
 A Chrome (Manifest V3) extension that filters amazon.co.uk to show only items
 sold by Amazon EU, avoiding the customs charge (€3 + VAT) that applies to
-non-EU-sold items on orders under €150, in effect since 1 July.
+non-EU-sold items on orders under €150, in effect since July 1st 2026.
 
-It works by appending Amazon's EU own seller ID (`p_6:A30DC7701CXIBH`) to search/category URLs, and by
-badging product pages that don't go through search (e.g. shared links)
+It works by appending Amazon's EU own seller ID (`p_6:A30DC7701CXIBH`) to search/category URLs, and by adding a badge to product pages 
 with the seller's EU/non-EU status.
 
 ## What it does
@@ -16,9 +15,7 @@ with the seller's EU/non-EU status.
   (or a grey one when disabled).
 - **Product pages** (`/dp/*`, `/gp/product/*`): reads the "Sold by" field in
   the buybox and shows a green ("no customs fee") or red ("customs fee may
-  apply") badge above the product title. (Originally anchored above the
-  buybox itself, but that anchor loads too late/inconsistently on some
-  layouts — the title area loads earlier and more reliably.)
+  apply") badge above the product title.
 - **Popup toggle**: turn filtering on/off; toggling reloads any open
   amazon.co.uk tabs so the change takes effect immediately.
   
@@ -119,7 +116,3 @@ cd icons && python3 gen_icons.py
 - Verify DOM-scraping changes against the live site rather than assumptions;
   Amazon's markup differs between layouts/AB tests and has changed at least
   once during this project's development (see Known limitations above).
-- When changing anything in `content.css` or the content scripts, remind
-  whoever is testing to reload the unpacked extension in
-  `chrome://extensions` — this has been a recurring source of "it's not
-  working" reports that were actually stale code.
