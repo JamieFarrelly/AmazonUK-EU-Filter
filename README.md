@@ -21,6 +21,16 @@ with the seller's EU/non-EU status.
   layouts — the title area loads earlier and more reliably.)
 - **Popup toggle**: turn filtering on/off; toggling reloads any open
   amazon.co.uk tabs so the change takes effect immediately.
+  
+## Screenshots
+
+Search results with the EU-Only Filter banner:
+
+![Search results with EU-Only Filter banner](store-listing/screenshots/search.png)
+
+Product page with the EU seller badge:
+
+![Product page with EU seller badge](store-listing/screenshots/product.png)
 
 ## Why it's built this way
 
@@ -57,16 +67,6 @@ goes straight to `/dp/...` with no search step to intercept.
 | `content.css` | shared | Styles for both the product badge and the search/category status banner (incl. the EU star-ring SVG) |
 | `popup.html` / `popup.js` / `popup.css` | extension popup | On/off toggle, backed by `chrome.storage.sync` (`enabled`, default `true`) |
 | `icons/gen_icons.py` | — | Regenerates `icons/icon{16,48,128}.png` (pure-Python PNG encoder, no Pillow dependency) — an EU-blue square with a ring of 12 gold five-pointed stars, matching the status banner's star design |
-
-## Screenshots
-
-Search results with the EU-Only Filter banner:
-
-![Search results with EU-Only Filter banner](store-listing/screenshots/search.png)
-
-Product page with the EU seller badge:
-
-![Product page with EU seller badge](store-listing/screenshots/product.png)
 
 ## Development
 
