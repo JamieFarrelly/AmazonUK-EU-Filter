@@ -17,7 +17,9 @@ with the seller's EU/non-EU status.
   (or a grey one when disabled).
 - **Product pages** (`/dp/*`, `/gp/product/*`): reads the "Sold by" field in
   the buybox and shows a green ("no customs fee") or red ("customs fee may
-  apply") badge above it.
+  apply") badge above the product title. (Originally anchored above the
+  buybox itself, but that anchor loads too late/inconsistently on some
+  layouts — the title area loads earlier and more reliably.)
 - **Popup toggle**: turn filtering on/off; toggling reloads any open
   amazon.co.uk tabs so the change takes effect immediately.
 
@@ -57,6 +59,12 @@ goes straight to `/dp/...` with no search step to intercept.
 | `popup.html` / `popup.js` / `popup.css` | extension popup | On/off toggle, backed by `chrome.storage.sync` (`enabled`, default `true`) |
 | `icons/gen_icons.py` | — | Regenerates `icons/icon{16,48,128}.png` (pure-Python PNG encoder, no Pillow dependency) — an EU-blue square with a ring of 12 gold five-pointed stars, matching the status banner's star design |
 
+## Screenshots
+
+| Search results | Product page |
+|---|---|
+| ![Search results with EU-Only Filter banner](store-listing/screenshots/search.png) | ![Product page with EU seller badge](store-listing/screenshots/product.png) |
+
 ## Development
 
 No build step — load the repo directly as an unpacked extension via
@@ -86,6 +94,16 @@ cd icons && python3 gen_icons.py
   first before assuming a logic bug; a new selector strategy will likely
   need to be added alongside the existing ones (don't replace them, other
   layouts may still use the old markup).
+- The buybox loads asynchronously and Amazon's product pages mutate
+  near-continuously (ads, recommendation widgets, telemetry), so a
+  `MutationObserver` debounce alone can go indefinitely without a quiet gap
+  to fire on. `content.js` also polls on a fixed 1s `setInterval` as a
+  fallback; `run()` is idempotent so repeated calls are safe. If a
+  content-script tab is left open across an extension reload, its next
+  `chrome.storage.sync.get` call throws "Extension context invalidated" —
+  `run()` catches this and stops its own observer/interval rather than
+  spamming the console; the fix for the user is to reload the actual page
+  tab, not just the extension.
 - EU-vs-non-EU classification for the product badge is a regex match
   (`/amazon\s*eu/i`) against the seller name text, not the seller ID facet
   used for search filtering — a seller literally named e.g. "Amazon EU
